@@ -3,6 +3,7 @@ package com.bridgelabz.EmployeePayrollApp.service;
 import com.bridgelabz.EmployeePayrollApp.dto.EmployeeDTO;
 import com.bridgelabz.EmployeePayrollApp.model.Employee;
 import com.bridgelabz.EmployeePayrollApp.repository.EmployeeRepository;
+import com.bridgelabz.EmployeePayrollApp.validation.EmployeeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,16 +29,18 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(Long id, EmployeeDTO employeeDTO) {
-        Employee employee = repository.findById(id).orElse(null);
-        if (employee != null) {
-            employee.setName(employeeDTO.getName());
-            employee.setSalary(employeeDTO.getSalary());
-            return repository.save(employee);
-        }
-        return null;
+        Employee existingEmployee = repository.findById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with ID: " + id));
+
+        existingEmployee.setName(employeeDTO.getName());
+        existingEmployee.setSalary(employeeDTO.getSalary());
+        return repository.save(existingEmployee);
     }
 
     public void deleteEmployee(Long id) {
+        if (!repository.existsById(id)) {
+            throw new EmployeeNotFoundException("Employee not found with ID: " + id);
+        }
         repository.deleteById(id);
     }
 }

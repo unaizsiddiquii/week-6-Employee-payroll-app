@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import com.bridgelabz.EmployeePayrollApp.service.EmployeeService;
 
 
-
 import java.util.List;
 
 
@@ -19,10 +18,14 @@ class EmployeeController {
     private EmployeeService service;
 
     @GetMapping
-    public List<Employee> getAllEmployees() { return service.getAllEmployees(); }
+    public List<Employee> getAllEmployees() {
+        return service.getAllEmployees();
+    }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable Long id) { return service.getEmployeeById(id); }
+    public Employee getEmployeeById(@PathVariable Long id) {
+        return service.getEmployeeById(id);
+    }
 
     @PostMapping
     public Employee createEmployee(@RequestBody EmployeeDTO employeeDTO) {
@@ -35,5 +38,7 @@ class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEmployee(@PathVariable Long id) { service.deleteEmployee(id); }
+    public void deleteEmployee(@PathVariable Long id) {
+        service.deleteEmployee(id);
+    }
 }
